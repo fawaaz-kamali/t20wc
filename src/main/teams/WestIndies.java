@@ -11,5 +11,13 @@ package main.teams;
 
 public class WestIndies extends Team
 {
-    
+    public WestIndies()
+    {
+        super();
+    }
+
+    public void setTeam()
+    {
+        
+    }
 }

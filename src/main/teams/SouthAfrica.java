@@ -11,5 +11,13 @@ package main.teams;
 
 public class SouthAfrica extends Team
 {
-    
+    public SouthAfrica()
+    {
+        super();
+    }
+
+    public void setTeam()
+    {
+        
+    }
 }
