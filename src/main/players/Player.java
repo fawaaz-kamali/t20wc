@@ -1,6 +1,6 @@
 /**********************************
  * @author          Fawaaz Kamali Siddiqui
- * @lastupdate      18 July 2024
+ * @lastupdate      30 July 2024
  * @description     
  * 
  * 
@@ -16,6 +16,7 @@ public abstract class Player
     private int overallRating;
     private int runsScored;
     private int wicketsTaken;
+    private String name;
 
     public Player()
     {
@@ -48,6 +49,11 @@ public abstract class Player
         return this.wicketsTaken;
     }
 
+    public String getName()
+    {
+        return this.name;
+    }
+
     // setters
     public void setBattingRating(int newRating)
     {
@@ -72,6 +78,11 @@ public abstract class Player
     public void setWicketsTaken(int wickets)
     {
         this.wicketsTaken = wickets;
+    }
+
+    public void setName(String name)
+    {
+        this.name = name;
     }
 
     /* used to assign batting, bowling, and overall ratings to each player */
