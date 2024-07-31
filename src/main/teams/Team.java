@@ -38,7 +38,7 @@ public abstract class Team
     // getters
     public double getOverallRating()
     {
-    return this.overallRating;
+        return this.overallRating;
     }
 
     public String getName()
