@@ -85,6 +85,15 @@ public abstract class Player
         this.name = name;
     }
 
+    /* resetStatistics(): used to reset all wickets and runs
+     * to 0.
+     */
+    public void resetStatistics()
+    {
+        this.setRunsScored(0);
+        this.setWicketsTaken(0);
+    }
+
     /* used to assign batting, bowling, and overall ratings to each player */
     public abstract void setRatings();
 }
