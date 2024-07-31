@@ -14,7 +14,9 @@ public abstract class Team
 {
     private double overallRating;
     private String name;
-    private ArrayList<Player> team;
+    protected ArrayList<Player> team = new ArrayList<>();
+    protected Player player1, player2, player3, player4, player5, player6, player7,
+                    player8, player9, player10, player11;
 
     public Team()
     {
@@ -25,13 +27,13 @@ public abstract class Team
     /*
      * setTeam()
      * {
+     *      setName(name);
      *      Player player1 = PatCummins();
      *      Player player2 = DavidWarner();
      *      ... so on and so forth
      *      team = {player1, player2, ...};
      *      setTeam(team);
      *      overall rating must be calculated
-     *      setName(name);
      * }
      */
 

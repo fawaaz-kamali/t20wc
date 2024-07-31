@@ -1,12 +1,10 @@
 /**********************************
  * @author          Fawaaz Kamali Siddiqui
- * @lastupdate      17 July 2024
- * @description     
- * 
- * 
- * 
+ * @lastupdate      31 July 2024
+ * @description     Team class
 **********************************/
 package main.teams;
+import main.players.nepal.*;
 
 
 public class Nepal extends Team
@@ -14,10 +12,46 @@ public class Nepal extends Team
     public Nepal()
     {
         super();
+        setTeam();
     }
 
     public void setTeam()
     {
-        
+        this.setName("Nepal");
+        // instantiating players
+        player1 = new RohitPaudel();       
+        player2 = new AasifSheikh();      
+        player3 = new AnilKumarSah();
+        player4 = new KushalBhurtel();
+        player5 = new KushalMalla();
+        player6 = new DipendraSinghAiree();
+        player7 = new LalitRajbanshi();
+        player8 = new GulshanJha();
+        player9 = new SompalKami();
+        player10 = new SundeepJora();
+        player11 = new AbinashBohara();
+        // add players to team
+        this.team.add(player1);
+        this.team.add(player2);
+        this.team.add(player3);
+        this.team.add(player4);
+        this.team.add(player5);
+        this.team.add(player6);
+        this.team.add(player7);
+        this.team.add(player8);
+        this.team.add(player9);
+        this.team.add(player10);
+        this.team.add(player11);
+        this.setTeam(this.team);
+        // calculate team overall rating
+        int sum = 0;
+        double overall = 0;
+        for (int i = 0; i < this.team.size(); i++)
+        {
+            sum += this.team.get(i).getOverallRating();
+        }
+        overall = sum / 11.0;
+        this.setOverallRating(overall);
+
     }
 }
