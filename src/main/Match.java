@@ -16,12 +16,13 @@ public class Match
 {
 
     // MATCH VARIABLES
-    private int currentRuns;
-    private int currentWickets;
-    private Player currentBowler;
-    private Player currentStriker;
-    private Player currentNonStriker;
-    private int target;
+    private static int currentRuns;
+    private static int currentWickets;
+    private static Player currentBowler;
+    private static Player currentStriker;
+    private static Player currentNonStriker;
+    private static int target;
+    private static boolean isFirstInnings = true;
     
 
     /****************
@@ -87,14 +88,25 @@ public class Match
     }
 
     /*****************
-     * playOver(): plays out an entire over bowled by a single bowler. 
+     * bowlOver(): plays out an entire over bowled by a single bowler. 
      * Extras are counted, and the over can only end in the middle if all
      * wickets are taken or target is chased. Bowler must guess the same 
      * number as batsman in a given range to take a wicket.
      */
-    public static void playOver(Player bowler)
+    private static void bowlOver()
     {
         // TODO
+        int userGuess = 0;
+        int compGuess = 0;
+        int thresholdMin = 0;
+        int thresholdMax = 0;
+        int ballsBowled = 0;
+        do 
+        {
+            thresholdMin = determineThreshold()[0];
+            thresholdMax = determineThreshold()[1];
+            
+        } while (currentWickets < 10 && (!isFirstInnings && currentRuns > target) && ballsBowled < 6);
     }
 
     /****************
@@ -103,7 +115,7 @@ public class Match
      * if either the target is chased, or all wickets are taken. It is easy
      * for players with higher batting ratings to bat and vice versa.
      */
-    public static void playInnings()
+    private static void bowInnings()
     {
         // TODO
     }
@@ -116,5 +128,58 @@ public class Match
     {
         // TODO
         preGameCommentary(userTeam, opponent);
+    }
+
+    private static int[] determineThreshold()
+    {
+        int bowlerRating = currentBowler.getBowlingRating();
+        int batterRating = currentStriker.getBattingRating();
+        int ratingDifference = bowlerRating - batterRating;
+        int[] threshold = new int[2];
+
+        if (ratingDifference < 15)
+        {
+            threshold[0] = 1;
+            threshold[1] = 6;
+        }
+        else if (ratingDifference >= 15 && ratingDifference < 25)
+        {
+            threshold[0] = 1;
+            threshold[1] = 5;
+        }
+        else if (ratingDifference >= 25 && ratingDifference < 35)
+        {
+            threshold[0] = 1;
+            threshold[1] = 4;
+        }
+        else if (ratingDifference >= 35)
+        {
+            threshold[0] = 1;
+            threshold[1] = 3;
+        }
+        // if none of those cases work, then the batsman is clearly better
+        // than the bowler. we will reassign the variable ratingDifference
+        ratingDifference = batterRating - bowlerRating;
+        if (ratingDifference < 15)
+        {
+            threshold[0] = 1;
+            threshold[1] = 6;
+        }
+        else if (ratingDifference >= 15 && ratingDifference < 25)
+        {
+            threshold[0] = 1;
+            threshold[1] = 7;
+        }
+        else if (ratingDifference >= 25 && ratingDifference < 35)
+        {
+            threshold[0] = 1;
+            threshold[1] = 8;
+        }
+        else if (ratingDifference >= 35)
+        {
+            threshold[0] = 1;
+            threshold[1] = 9;
+        }
+        return threshold;
     }
 }

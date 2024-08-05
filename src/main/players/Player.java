@@ -17,6 +17,11 @@ public abstract class Player
     private int runsScored;
     private int wicketsTaken;
     private String name;
+    private int matchBallsBatted;
+    private int matchBallsBowled;
+    private int matchRunsScored;
+    private int matchRunsConceded;
+    private int matchWickets;
 
     public Player()
     {
@@ -96,4 +101,60 @@ public abstract class Player
 
     /* used to assign batting, bowling, and overall ratings to each player */
     public abstract void setRatings();
+
+
+    // INDIVIDUAL MATCH STATS
+
+    public int getMatchBallsBatted()
+    {
+        return this.matchBallsBatted;
+    }
+
+    public int getMatchBallsBowled()
+    {
+        return this.matchBallsBowled;
+    }
+
+    public int getMatchRunsScored()
+    {
+        return this.matchRunsScored;
+    }
+
+    public int getMatchRunsConceded()
+    {
+        return this.matchRunsConceded;
+    }
+
+    public int getMatchWickets()
+    {
+        return this.matchWickets;
+    }
+
+    public void incrementMatchBallsBatted()
+    {
+        this.matchBallsBatted += 1;
+    }
+
+    public void incrementMatchBallsBowled()
+    {
+        this.matchBallsBowled += 1;
+    }
+
+    public void addMatchRunsScored(int runs)
+    {
+        this.matchRunsScored += runs;
+        this.runsScored += runs;
+    }
+
+    public void addMatchRunsConceded(int runs)
+    {
+        this.matchRunsConceded += runs;
+        this.matchRunsConceded += runs;
+    }
+
+    public void incrementMatchWickets()
+    {
+        this.matchWickets += 1;
+        this.wicketsTaken += 1;
+    }
 }
