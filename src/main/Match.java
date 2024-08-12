@@ -27,6 +27,7 @@ public class Match
     private static Player currentNonStriker;
     private static int target;
     private static boolean isFirstInnings = true;
+    private static boolean isBattingFirst = false;
     private static Team battingTeam;
     private static Team bowlingTeam;
     private static boolean userWin = false;
@@ -42,7 +43,7 @@ public class Match
     public static void preGameCommentary(Team userTeam, Team opponent)
     {
         String[] lines = {
-            String.format("It's the match everybody is talking about. %s takes on %s in what could turn out to be a turning point in this year's T10 World Cup.", opponent.getName(), userTeam.getName()), 
+            String.format("It's the match everybody is talking about. %s takes on %s in what could be a turning point in this year's T10 World Cup.", opponent.getName(), userTeam.getName()), 
             String.format("And here we go. Tonight's match between %s and %s is one that looks quite promising. The thrill in the stadium is intense as both sets of fans roar their chants.", userTeam.getName(), opponent.getName()),
             String.format("Well there has been quite a lot of controversy surrounding this match. After brief physical altercations between both captains, %s and %s will finally meet each other on the pitch.", opponent.getName(), userTeam.getName()),
             String.format("Only a few sporting rivalries come close to this one. Both %s and %s are willing to give it all in this elimination match.", userTeam.getName(), opponent.getName()),
@@ -118,7 +119,7 @@ public class Match
             thresholdMax = determineThreshold();
             System.out.printf("%s to %s. %n", currentBowler.getName(), currentStriker.getName());
             compGuess = (int)(Math.random()*thresholdMax + thresholdMin);
-            // System.out.println(compGuess); // for testing purposes
+            System.out.println(compGuess); // for testing purposes
             userGuess = Utilities.inputInt("Enter number between " + thresholdMin + " and " + thresholdMax + ": ", thresholdMin, thresholdMax);
             System.out.printf("%s entered %s. %n", currentStriker.getName(), compGuess);
             if (userGuess == compGuess)
@@ -154,6 +155,7 @@ public class Match
                 }
                 if (currentWickets == 10)
                 {
+                    // currentStriker = bowlingTeam.getTeam().get((int)(Math.random()*11+1)); // ignore
                     currentStriker = null;
                 }
             }
@@ -236,7 +238,7 @@ public class Match
             {
                 userWin = false;
             }
-            else if (currentRuns == target - 1)
+            else if (currentRuns == (target - 1))
             {
                 // super over
             }
@@ -248,6 +250,144 @@ public class Match
         
     }
 
+    private static void batOver()
+    {
+        int userGuess = 0;
+        int compGuess = 0;
+        int thresholdMin = 1;
+        int thresholdMax = 0;
+        int ballsBowled = 0;
+
+        do 
+        {
+            displayScorecard();
+            // thresholdMin = determineThreshold()[0];
+            thresholdMax = determineThreshold();
+            System.out.printf("%s to %s. %n", currentBowler.getName(), currentStriker.getName());
+            compGuess = (int)(Math.random()*thresholdMax + thresholdMin);
+            System.out.println(compGuess); // for testing purposes
+            userGuess = Utilities.inputInt("Enter number between " + thresholdMin + " and " + thresholdMax + ": ", thresholdMin, thresholdMax);
+            System.out.printf("%s entered %s. %n", currentBowler.getName(), compGuess);
+            if (userGuess == compGuess)
+            {
+                currentWickets += 1;
+                currentBowler.incrementMatchBallsBowled();
+                currentBowler.incrementMatchWickets();
+                currentStriker.incrementMatchBallsBatted();
+                wicketCommentary(currentBowler, currentStriker);
+                
+                /*
+                 * David Warner - 20(10)
+                 * Dismissed by Jasprit Bumrah
+                 * Press the enter key to continue > 
+                 * 
+                 * 
+                 * Matthew Wade on strike.
+                 */
+                System.out.println("\n\n"); // 3 newlines
+                System.out.printf("%s - %s(%s) %n", currentStriker.getName(), currentStriker.getMatchRunsScored(), currentStriker.getMatchBallsBatted());
+                System.out.printf("Dismissed by %s. %n", currentBowler.getName());
+                System.out.print("Press the enter key to continue > ");
+                s.nextLine();
+                System.out.println("\n\n"); // 3 newlines
+                if (currentWickets < 10)
+                {
+                    currentStriker = pickBatsman();
+                    System.out.printf("%s on strike. %n", currentStriker.getName());
+                    if (ballsBowled == 5)
+                    {
+                        switchStrike();
+                    }
+                }
+                if (currentWickets == 10)
+                {
+                    // currentStriker = bowlingTeam.getTeam().get((int)(Math.random()*11+1)); // ignore
+                    currentStriker = null;
+                }
+            }
+            else // add runs to tally
+            {
+                currentRuns += userGuess;
+                currentBowler.incrementMatchBallsBowled();
+                currentBowler.addMatchRunsConceded(userGuess);
+                currentStriker.incrementMatchBallsBatted();
+                currentStriker.addMatchRunsScored(userGuess);
+                if (userGuess == 4 || userGuess == 6)
+                {
+                    boundaryCommentary(currentStriker, currentBowler);
+                }
+                if (userGuess % 2 == 1) // if odd number was entered
+                {
+                    switchStrike();
+                }
+                if (userGuess % 2 == 0 && ballsBowled == 5) // switch strike at end of overs
+                {
+                    switchStrike();
+                }
+            }
+            ballsBowled += 1;
+            inningsBallsBowled += 1;
+            if (!isFirstInnings && currentRuns > target)
+            {
+                break; // target has been chased
+            }
+            
+        } while (currentWickets < 10 && ballsBowled < 6);
+    }
+
+    private static void batInnings(Team userTeam, Team opponent)
+    {
+        battingTeam = userTeam;
+        bowlingTeam = opponent;
+        availableBatters = Utilities.copyList(battingTeam.getTeam());
+        availableBowlers = Utilities.copyList(bowlingTeam.getTeam());
+
+        currentRuns = 0;
+        currentWickets = 0;
+        inningsBallsBowled = 0;
+
+        currentStriker = pickBatsman();
+        currentNonStriker = pickBatsman();
+        // currentBowler = getBestBowler(); // always starts with best rated bowler;
+        currentBowler = getBestBowler(currentStriker); // ignore parameter 
+        do 
+        {
+            batOver();
+            if (!isFirstInnings && currentRuns < target)
+            {
+                break;
+            }
+            battingCard();
+            bowlingCard();
+            Utilities.slowPrint("\n", 100);
+            displayScorecard();
+            if (inningsBallsBowled < 60 && currentWickets < 10)
+            {
+                currentBowler = getBestBowler(currentBowler);
+            }
+        } while (inningsBallsBowled < 60 && currentWickets < 10);
+
+        if (isFirstInnings)
+        {
+            target = currentRuns + 1;
+        }
+        else 
+        {
+            if (currentRuns >= target)
+            {
+                userWin = true;
+            }
+            else if (currentRuns == (target - 1))
+            {
+                // super over
+            }
+            else 
+            {
+                userWin = false;
+            }
+        }
+    }
+
     /*****************
      * playMatch(): plays out an entire match of 2 innings. The method returns 
      * winner from match to advance to next round.
@@ -256,13 +396,78 @@ public class Match
     {
         // TODO
         preGameCommentary(userTeam, opponent);
+        System.out.println("\n\n"); // 3 newlines
+        toss(userTeam, opponent);
         Utilities.slowPrint("\n", 1000);
         System.out.println("\n\n"); // 3 newlines
-        bowlInnings(userTeam, opponent);
+        if (isBattingFirst)
+        {
+            isFirstInnings = true;
+            batInnings(userTeam, opponent);
+            Utilities.slowPrint(String.format("%s has set a target of %s.%n", userTeam.getName(), target), 20);
+            isFirstInnings = false;
+            bowlInnings(userTeam, opponent);
+        }
+        else 
+        {
+            isFirstInnings = true;
+            bowlInnings(userTeam, opponent);
+            Utilities.slowPrint(String.format("%s has set a target of %s.%n", opponent.getName(), target), 20);
+            isFirstInnings = false;
+            batInnings(userTeam, opponent);
+        }
+
+        if (userWin)
+        {
+            System.out.printf("%s wins against %s. Congratulations. %n", userTeam.getName(), opponent.getName());
+        }
+        else 
+        {
+            System.out.printf("%s wins against %s. Commiserations. %n", opponent.getName(), userTeam.getName());
+        }
     }
 
 
     // PRIVATE METHODS
+
+    private static void toss(Team userTeam, Team opponent)
+    {
+        int toss = 0;
+        int coinFlip = (int)(Math.random()*2+1);
+        int decision = 0;
+
+        Utilities.slowPrint("Both captains are on the ground for the toss.\n", 20);
+        toss = Utilities.inputInt("Your call. Heads(1) or tails(2): ", 1, 2);
+        if (toss == coinFlip)
+        {
+            decision = Utilities.inputInt("You have won the toss. Bat(1) or bowl(2): ", 1, 2);
+            if (decision == 1)
+            {
+                System.out.printf("%s has decided to bat. %n", userTeam.getName());
+                isBattingFirst = true;
+            }
+            else
+            {
+                System.out.printf("%s has decided to bowl. %n", userTeam.getName());
+                isBattingFirst = false;
+            }
+        }
+        else // lost the toss
+        {
+            System.out.println("You have lost the toss.");
+            decision = (int)(Math.random()*2+1);
+            if (decision == 1)
+            {
+                System.out.printf("%s has decided to bat. %n", opponent.getName());
+                isBattingFirst = false;
+            }
+            else
+            {
+                System.out.printf("%s has decided to bowl. %n", opponent.getName());
+                isBattingFirst = true;
+            }
+        }
+    }
 
 
 
@@ -329,20 +534,21 @@ public class Match
         return batsman;
     }
 
-    private static Player getBestBowler()
+    private static Player getBestBowler(Player previousBowler)
     {
         int rating = 0;
         int index = 0;
         for (int i = 0; i < 11; i++)
         {
-            if (availableBowlers.get(i).getBowlingRating() > rating)
+            Player p = availableBowlers.get(i);
+            if (p.getBowlingRating() > rating && !p.getName().equals(previousBowler.getName()) && p.getMatchBallsBowled() < 18)
             {
                 rating = availableBowlers.get(i).getBowlingRating();
                 index = i;
             }
         }
         Player bowler = availableBowlers.get(index);
-        availableBatters.remove(bowler);
+        // availableBatters.remove(bowler);
         return bowler;
     }
 
@@ -370,7 +576,10 @@ public class Match
         System.out.println("\n\n"); // 3 newlines
         System.out.printf("%s: %s/%s (%s.%s) %n", battingTeam.getName(), currentRuns, currentWickets, inningsBallsBowled / 6, inningsBallsBowled % 6);
         System.out.println("=======================================");
-        System.out.printf("%s - %s (%s)* %n", currentStriker.getName(), currentStriker.getMatchRunsScored(), currentStriker.getMatchBallsBatted());
+        if (currentStriker != null)
+        {
+            System.out.printf("%s - %s (%s)* %n", currentStriker.getName(), currentStriker.getMatchRunsScored(), currentStriker.getMatchBallsBatted());
+        }
         System.out.printf("%s - %s (%s) %n", currentNonStriker.getName(), currentNonStriker.getMatchRunsScored(), currentNonStriker.getMatchBallsBatted());
         System.out.println("=======================================");
         System.out.printf("%s - %s/%s (%s.%s) %n", currentBowler.getName(), currentBowler.getMatchWickets(), currentBowler.getMatchRunsConceded(), currentBowler.getMatchBallsBowled() / 6, currentBowler.getMatchBallsBowled() % 6);
@@ -403,7 +612,7 @@ public class Match
             }
             System.out.printf("%-40s%-10s%-10s%-15.2f%-10s%-20s", p.getName(), p.getMatchRunsScored(), p.getMatchBallsBatted(), strikeRate, p.getBattingRating(), p.getOverallRating());
             
-            if (p.getName().equals(currentStriker.getName()) || p.getName().equals(currentNonStriker.getName()))
+            if (currentStriker != null && (p.getName().equals(currentStriker.getName()) || p.getName().equals(currentNonStriker.getName())))
             {
                 System.out.print("NOT OUT");
             }

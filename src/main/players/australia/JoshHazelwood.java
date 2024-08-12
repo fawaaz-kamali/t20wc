@@ -21,7 +21,7 @@ public class JoshHazelwood extends Player
     {
         this.setName("Josh Hazelwood");
         this.setBattingRating(40);
-        this.setBowlingRating(85);
+        this.setBowlingRating(87);
         this.setOverallRating(86);
     }
 }
