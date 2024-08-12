@@ -8,6 +8,7 @@
 **********************************/
 package main;
 import main.teams.*;
+import main.Match;
 
 public class Main
 {
@@ -35,19 +36,20 @@ public class Main
         Team[] teams = {afghanistan, australia, bangladesh, canada, england, india, ireland, 
             nepal, netherlands, newzealand, pakistan, scotland, southafrica, srilanka, usa, westindies};
 
-        for (int i = 0; i < teams.length; i++)
-        {
-            System.out.printf("TEAM: %s%n", teams[i].getName());
-            System.out.printf("%-40s%-10s%-10s%-10s%n", "Name", "Batting", "Bowling", "Overall");
-            for (int j = 0; j < 11; j++)
-            {
-                String playerName = teams[i].getTeam().get(j).getName();
-                int bat = teams[i].getTeam().get(j).getBattingRating();
-                int bowl = teams[i].getTeam().get(j).getBowlingRating();
-                int over = teams[i].getTeam().get(j).getOverallRating();
-                System.out.printf("%-40s%-10s%-10s%-10s%n", playerName, bat, bowl, over);
-            }
-            System.out.println(); // newline
-        }
+        // for (int i = 0; i < teams.length; i++)
+        // {
+        //     System.out.printf("TEAM: %s%n", teams[i].getName());
+        //     System.out.printf("%-40s%-10s%-10s%-10s%n", "Name", "Batting", "Bowling", "Overall");
+        //     for (int j = 0; j < 11; j++)
+        //     {
+        //         String playerName = teams[i].getTeam().get(j).getName();
+        //         int bat = teams[i].getTeam().get(j).getBattingRating();
+        //         int bowl = teams[i].getTeam().get(j).getBowlingRating();
+        //         int over = teams[i].getTeam().get(j).getOverallRating();
+        //         System.out.printf("%-40s%-10s%-10s%-10s%n", playerName, bat, bowl, over);
+        //     }
+        //     System.out.println(); // newline
+        // }
+        Match.playMatch(india, australia);
     }
 }

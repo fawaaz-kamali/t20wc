@@ -4,6 +4,9 @@
  * @description     Team class
 **********************************/
 package main.teams;
+import java.util.ArrayList;
+
+import main.players.Player;
 import main.players.india.*;
 
 
@@ -31,18 +34,19 @@ public class India extends Team
         player10 = new ArshdeepSingh();
         player11 = new MohammadSiraj();
         // add players to team
-        this.team.add(player1);
-        this.team.add(player2);
-        this.team.add(player3);
-        this.team.add(player4);
-        this.team.add(player5);
-        this.team.add(player6);
-        this.team.add(player7);
-        this.team.add(player8);
-        this.team.add(player9);
-        this.team.add(player10);
-        this.team.add(player11);
-        this.setTeam(this.team);
+        ArrayList<Player> t = new ArrayList();
+        t.add(player1);
+        t.add(player2);
+        t.add(player3);
+        t.add(player4);
+        t.add(player5);
+        t.add(player6);
+        t.add(player7);
+        t.add(player8);
+        t.add(player9);
+        t.add(player10);
+        t.add(player11);
+        this.setTeam(t);
         // calculate team overall rating
         int sum = 0;
         double overall = 0;

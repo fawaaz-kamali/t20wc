@@ -143,18 +143,18 @@ public abstract class Player
     public void addMatchRunsScored(int runs)
     {
         this.matchRunsScored += runs;
-        this.runsScored += runs;
+        // this.runsScored += runs;
     }
 
     public void addMatchRunsConceded(int runs)
     {
         this.matchRunsConceded += runs;
-        this.matchRunsConceded += runs;
+        // this.matchRunsConceded += runs;
     }
 
     public void incrementMatchWickets()
     {
         this.matchWickets += 1;
-        this.wicketsTaken += 1;
+        // this.wicketsTaken += 1;
     }
 }

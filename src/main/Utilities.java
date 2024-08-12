@@ -14,7 +14,9 @@
 **********************************/
 package main;
 
+import main.players.Player;
 import java.util.Scanner;
+import java.util.ArrayList;
 
 public class Utilities
 {
@@ -87,6 +89,16 @@ public class Utilities
                 e.printStackTrace();
             }
         }
+    }
+
+    public static ArrayList<Player> copyList(ArrayList<Player> list)
+    {
+        ArrayList<Player> duplicate = new ArrayList<>();
+        for (int i = 0; i < list.size(); i++)
+        {
+            duplicate.add(list.get(i));
+        }
+        return duplicate;
     }
 
 }
