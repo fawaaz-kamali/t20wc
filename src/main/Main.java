@@ -63,7 +63,11 @@ public class Main
         //     }
         //     System.out.println(); // newline
         // }
-        Match.playMatch(india, australia);
+
+        // Match.playMatch(india, australia);
+
+        Team rand = Utilities.mapTeam("India");
+        System.out.println(rand.getTeam().get(2).getName());
 
         /*
         Tournament.displayBracket();

@@ -15,6 +15,7 @@
 package main;
 
 import main.players.Player;
+import main.teams.*;
 import java.util.Scanner;
 import java.util.ArrayList;
 
@@ -99,6 +100,39 @@ public class Utilities
             duplicate.add(list.get(i));
         }
         return duplicate;
+    }
+
+    /*********************
+     * mapTeam(): used for mapping a name to an object.
+     */
+    public static Team mapTeam(String name)
+    {
+        Team[] teams = {new Afghanistan(), 
+                        new Australia(), 
+                        new Bangladesh(), 
+                        new Canada(), 
+                        new England(), 
+                        new India(), 
+                        new Ireland(), 
+                        new Nepal(), 
+                        new Netherlands(), 
+                        new NewZealand(), 
+                        new Pakistan(), 
+                        new Scotland(), 
+                        new SouthAfrica(), 
+                        new SriLanka(), 
+                        new USA(), 
+                        new WestIndies()
+                    };
+        Team team = null;
+        for (int i = 0; i < teams.length; i++)
+        {
+            if (teams[i].getName().equals(name))
+            {
+                return teams[i];
+            }
+        }
+        return null;
     }
 
 }
