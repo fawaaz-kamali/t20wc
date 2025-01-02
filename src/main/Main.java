@@ -64,8 +64,9 @@ public class Main
         //     System.out.println(); // newline
         // }
         // Match.playMatch(india, australia);
+
+        /*
         Tournament.displayBracket();
-        // System.out.println(QF[0].getName());
 
         QF = Tournament.simulateRound(R16);
         SF = Tournament.simulateRound(QF);
@@ -73,5 +74,11 @@ public class Main
 
         Tournament.displayBracket();
         System.out.printf("The winner is %s.%n", Tournament.simulateMatch(FINALS[0], FINALS[1]).getName());
+
+        */
+
+        System.out.println("How deos that work?");
+        Utilities.inputString("Press enter to continue >");
+        System.out.println("That's how it works!");
     }
 }
