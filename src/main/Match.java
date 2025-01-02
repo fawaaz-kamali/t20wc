@@ -389,7 +389,7 @@ public class Match {
      * playMatch(): plays out an entire match of 2 innings. The method returns
      * winner from match to advance to next round.
      */
-    public static void playMatch(Team userTeam, Team opponent) {
+    public static Team playMatch(Team userTeam, Team opponent) {
         // TODO
         preGameCommentary(userTeam, opponent);
         System.out.println("\n\n"); // 3 newlines
@@ -410,10 +410,14 @@ public class Match {
             batInnings(userTeam, opponent);
         }
 
-        if (userWin) {
+        if (userWin) 
+        {
             System.out.printf("%s wins against %s. Congratulations. %n", userTeam.getName(), opponent.getName());
-        } else {
+            return userTeam;
+        } else 
+        {
             System.out.printf("%s wins against %s. Commiserations. %n", opponent.getName(), userTeam.getName());
+            return opponent;
         }
     }
 

@@ -8,6 +8,10 @@
 **********************************/
 package main;
 import main.teams.*;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import main.Match;
 
 public class Main
@@ -31,10 +35,19 @@ public class Main
     static Team usa = new USA();
     static Team westindies = new WestIndies();
 
+    static Team userTeam;
+
+    static Team[] R16 = {afghanistan, australia, bangladesh, canada, england, india, ireland, 
+        nepal, netherlands, newzealand, pakistan, scotland, southafrica, srilanka, usa, westindies
+    };
+    static Team[] QF = new Team[8];
+    static Team[] SF = new Team[4];
+    static Team[] FINALS = new Team[2];
+
     public static void main(String[] args)
     {
-        Team[] teams = {afghanistan, australia, bangladesh, canada, england, india, ireland, 
-            nepal, netherlands, newzealand, pakistan, scotland, southafrica, srilanka, usa, westindies};
+        // Team[] teams = {afghanistan, australia, bangladesh, canada, england, india, ireland, 
+        //     nepal, netherlands, newzealand, pakistan, scotland, southafrica, srilanka, usa, westindies};
 
         // for (int i = 0; i < teams.length; i++)
         // {
@@ -50,6 +63,15 @@ public class Main
         //     }
         //     System.out.println(); // newline
         // }
-        Match.playMatch(india, australia);
+        // Match.playMatch(india, australia);
+        Tournament.displayBracket();
+        // System.out.println(QF[0].getName());
+
+        QF = Tournament.simulateRound(R16);
+        SF = Tournament.simulateRound(QF);
+        FINALS = Tournament.simulateRound(SF);
+
+        Tournament.displayBracket();
+        System.out.printf("The winner is %s.%n", Tournament.simulateMatch(FINALS[0], FINALS[1]).getName());
     }
 }

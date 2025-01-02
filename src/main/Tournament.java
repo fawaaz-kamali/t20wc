@@ -72,11 +72,34 @@ public class Tournament {
      * (QF, SF, etc.) until a user game is played. Returns an array
      * for the matches for next round.
      */
-    public static ArrayList<Team> simulateRound(ArrayList<Team> currentRound) 
+    public static Team[] simulateRound(Team[] currentRound) 
     {
-        ArrayList<Team> nextRound = new ArrayList<>();
+        Team[] nextRound = new Team[currentRound.length / 2];
+        int userTeamIndex = 0;
         // TODO: simulate games and add them to arraylist as long as there user matches
         // are not simulated
+        for (int i = 0; i < currentRound.length; i+=2)
+        {
+            // check if user team is being accidentally simulated. if so, skip the simulation
+            /* 
+            if (currentRound[i].getName().equals(Main.userTeam.getName()))
+            {
+                userTeamIndex = i;
+                continue;
+            }
+            else if (currentRound[i+1].getName().equals(Main.userTeam.getName()))
+            {
+                userTeamIndex = i+1;
+                continue;
+            }
+                */
+            // simulate round between computers
+            nextRound[i/2] = simulateMatch(currentRound[i], currentRound[i+1]);
+        }
+
+        // play out user match
+        //nextRound[userTeamIndex/2] = Match.playMatch(Main.userTeam, 
+        //                (userTeamIndex%2==0) ? currentRound[userTeamIndex + 1] : currentRound[userTeamIndex - 1]); // index of opponent team
         return nextRound;
     }
 
@@ -86,7 +109,42 @@ public class Tournament {
      */
     public static void displayBracket() 
     {
-        // TODO
+        // display R16 matches one by one
+        System.out.printf("\n--------------------------- ROUND OF 16 ---------------------------\n\n");
+        for (int i = 0; i < 16; i+=2)
+        {
+            System.out.printf("%s vs %s. %n", Main.R16[i].getName(), Main.R16[i+1].getName());
+        }
+
+        // display QF matches if they've been decided
+        if (Main.QF[0] != null)
+        {
+            System.out.printf("\n--------------------------- QUARTER-FINALS ---------------------------\n\n");
+            for (int i = 0; i < 8; i+=2)
+            {
+                System.out.printf("%s vs %s. %n", Main.QF[i].getName(), Main.QF[i+1].getName());
+            }
+
+            // display SF matches if they've been decided
+            if (Main.SF[0] != null)
+            {
+                System.out.printf("\n--------------------------- SEMI-FINALS ---------------------------\n\n");
+                for (int i = 0; i < 4; i+=2)
+                {
+                    System.out.printf("%s vs %s. %n", Main.SF[i].getName(), Main.SF[i+1].getName());
+                }
+
+                // display finals if it's been decided
+                if (Main.FINALS[0] != null)
+                {
+                    System.out.printf("\n--------------------------- FINALS ---------------------------\n\n");
+                    for (int i = 0; i < 2; i+=2)
+                    {
+                        System.out.printf("%s vs %s. %n", Main.FINALS[i].getName(), Main.FINALS[i+1].getName());
+                    }
+                }
+            }
+        }
     }
 
     /******************************
