@@ -207,11 +207,12 @@ public class Match {
             }
             ballsBowled += 1;
             inningsBallsBowled += 1;
-            if (!isFirstInnings && currentRuns > target) {
+            if (!isFirstInnings && currentRuns >= target) {
                 break; // target has been chased
             }
 
         } while (currentWickets < 10 && ballsBowled < 6);
+        switchStrike();
     }
 
     /****************
@@ -336,11 +337,12 @@ public class Match {
             }
             ballsBowled += 1;
             inningsBallsBowled += 1;
-            if (!isFirstInnings && currentRuns > target) {
+            if (!isFirstInnings && currentRuns >= target) {
                 break; // target has been chased
             }
 
         } while (currentWickets < 10 && ballsBowled < 6);
+        switchStrike();
     }
 
     private static void batInnings(Team userTeam, Team opponent) {
@@ -451,34 +453,44 @@ public class Match {
                 isBattingFirst = true;
             }
         }
+        Utilities.inputString("Press the enter key to continue> ");
     }
 
     private static int determineThreshold() {
         int bowlerRating = currentBowler.getBowlingRating();
         int batterRating = currentStriker.getBattingRating();
         int ratingDifference = bowlerRating - batterRating;
-        // int[] threshold = new int[2];
         int threshold = 0;
 
-        if (ratingDifference < 15) {
+        if (ratingDifference < 15 && ratingDifference >= -15) 
+        {
             threshold = 6;
-        } else if (ratingDifference >= 15 && ratingDifference < 25) {
+        } 
+        else if (ratingDifference >= 15 && ratingDifference < 25) 
+        {
             threshold = 5;
-        } else if (ratingDifference >= 25 && ratingDifference < 35) {
+        } 
+        else if (ratingDifference >= 25 && ratingDifference < 35) 
+        {
             threshold = 4;
-        } else if (ratingDifference >= 35) {
+        } 
+        else if (ratingDifference >= 35) 
+        {
             threshold = 3;
         }
+
         // if none of those cases work, then the batsman is clearly better
         // than the bowler. we will reassign the variable ratingDifference
-        ratingDifference = batterRating - bowlerRating;
-        if (ratingDifference < 15) {
-            threshold = 6;
-        } else if (ratingDifference >= 15 && ratingDifference < 25) {
+        else if (ratingDifference < -15 && ratingDifference >= -25) 
+        {
             threshold = 7;
-        } else if (ratingDifference >= 25 && ratingDifference < 35) {
+        } 
+        else if (ratingDifference < -25 && ratingDifference >= -35) 
+        {
             threshold = 8;
-        } else if (ratingDifference >= 35) {
+        } 
+        else if (ratingDifference <= -35) 
+        {
             threshold = 9;
         }
         return threshold;
@@ -575,7 +587,7 @@ public class Match {
             System.out.printf("%-40s%-10s%-10s%-15.2f%-10s%-20s", p.getName(), p.getMatchRunsScored(),
                     p.getMatchBallsBatted(), strikeRate, p.getBattingRating(), p.getOverallRating());
 
-            if (currentStriker != null && (p.getName().equals(currentStriker.getName())
+            if ((currentNonStriker != null) && (p.getName().equals(currentStriker.getName())
                     || p.getName().equals(currentNonStriker.getName()))) {
                 System.out.print("NOT OUT");
             } else {
