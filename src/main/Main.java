@@ -68,10 +68,10 @@ public class Main
         // Match.playMatch(india, australia);
 
         Utilities.loadProgress();
-        System.out.println(userTeam.getTeam().get(2).getName());
-        // Tournament.displayBracket();
+        // System.out.println(userTeam.getTeam().get(2).getName());
+        Tournament.displayBracket();
         // System.out.println(Tournament.simulateMatch(FINALS[0], FINALS[1]).getName() + " has won.");
-        Tournament.displayStats(userTeam);
+        // Tournament.displayStats(userTeam);
 
         /*
         Tournament.displayBracket();
