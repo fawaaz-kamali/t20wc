@@ -237,6 +237,80 @@ public class Utilities
         String fileContent = "";
         PrintWriter diskWriter = new PrintWriter("src\\main\\progress.txt");
 
+        // Write R16
+        for (int i = 0; i < Main.R16.length; i++)
+        {
+            if (Main.R16[i] != null)
+            {
+                fileContent += Main.R16[i].getName();
+            }
+            else 
+            {
+                fileContent += "null";
+            }
+            fileContent += ",";
+        }
+        fileContent += "\n";
 
+        // Write QF
+        for (int i = 0; i < Main.QF.length; i++)
+        {
+            if (Main.QF[i] != null)
+            {
+                fileContent += Main.QF[i].getName();
+            }
+            else 
+            {
+                fileContent += "null";
+            }
+            fileContent += ",";
+        }
+        fileContent += "\n";
+
+        // Write SF
+        for (int i = 0; i < Main.SF.length; i++)
+        {
+            if (Main.SF[i] != null)
+            {
+                fileContent += Main.SF[i].getName();
+            }
+            else 
+            {
+                fileContent += "null";
+            }
+            fileContent += ",";
+        }
+        fileContent += "\n";
+
+        // Write Finals
+        for (int i = 0; i < Main.FINALS.length; i++)
+        {
+            if (Main.FINALS[i] != null)
+            {
+                fileContent += Main.FINALS[i].getName();
+            }
+            else 
+            {
+                fileContent += "null";
+            }
+            fileContent += ",";
+        }
+        fileContent += "\n";
+
+        // Write user team
+        fileContent += Main.userTeam.getName();
+        fileContent += ",\n";
+
+        // Write individual statistics
+        for (int i = 0; i < Main.userTeam.getTeam().size(); i++)
+        {
+            fileContent += Main.userTeam.getTeam().get(i).getRunsScored();
+            fileContent += ",";
+            fileContent += Main.userTeam.getTeam().get(i).getWicketsTaken();
+            fileContent += ",\n";
+        }
+
+        diskWriter.print(fileContent);
+        diskWriter.close();
     }
 }

@@ -9,6 +9,7 @@
 package main;
 import main.teams.*;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -37,15 +38,15 @@ public class Main
 
     static Team userTeam;
 
-    // static Team[] R16 = {afghanistan, australia, bangladesh, canada, england, india, ireland, 
-    //     nepal, netherlands, newzealand, pakistan, scotland, southafrica, srilanka, usa, westindies
-    // };
-    static Team[] R16 = new Team[16];
-    static Team[] QF = new Team[8];
-    static Team[] SF = new Team[4];
+    static Team[] R16 = {afghanistan, australia, bangladesh, canada, england, india, ireland, 
+        nepal, netherlands, newzealand, pakistan, scotland, southafrica, srilanka, usa, westindies
+    };
+    // static Team[] R16 = new Team[16];
+    static Team[] QF = {australia, bangladesh, india, ireland, newzealand, pakistan, southafrica, westindies};
+    static Team[] SF = {australia, india, newzealand, southafrica};
     static Team[] FINALS = new Team[2];
 
-    public static void main(String[] args)
+    public static void main(String[] args) throws FileNotFoundException
     {
         // Team[] teams = {afghanistan, australia, bangladesh, canada, england, india, ireland, 
         //     nepal, netherlands, newzealand, pakistan, scotland, southafrica, srilanka, usa, westindies};
@@ -67,11 +68,11 @@ public class Main
 
         // Match.playMatch(india, australia);
 
-        Utilities.loadProgress();
-        // System.out.println(userTeam.getTeam().get(2).getName());
-        Tournament.displayBracket();
-        // System.out.println(Tournament.simulateMatch(FINALS[0], FINALS[1]).getName() + " has won.");
-        // Tournament.displayStats(userTeam);
+        userTeam = india;
+
+        userTeam.getTeam().get(1).setRunsScored(15);
+        userTeam.getTeam().get(10).setWicketsTaken(8);
+        Utilities.saveProgress();
 
         /*
         Tournament.displayBracket();
