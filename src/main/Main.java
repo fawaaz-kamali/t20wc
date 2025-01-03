@@ -37,9 +37,10 @@ public class Main
 
     static Team userTeam;
 
-    static Team[] R16 = {afghanistan, australia, bangladesh, canada, england, india, ireland, 
-        nepal, netherlands, newzealand, pakistan, scotland, southafrica, srilanka, usa, westindies
-    };
+    // static Team[] R16 = {afghanistan, australia, bangladesh, canada, england, india, ireland, 
+    //     nepal, netherlands, newzealand, pakistan, scotland, southafrica, srilanka, usa, westindies
+    // };
+    static Team[] R16 = new Team[16];
     static Team[] QF = new Team[8];
     static Team[] SF = new Team[4];
     static Team[] FINALS = new Team[2];
@@ -66,8 +67,11 @@ public class Main
 
         // Match.playMatch(india, australia);
 
-        Team rand = Utilities.mapTeam("India");
-        System.out.println(rand.getTeam().get(2).getName());
+        Utilities.loadProgress();
+        System.out.println(userTeam.getTeam().get(2).getName());
+        // Tournament.displayBracket();
+        // System.out.println(Tournament.simulateMatch(FINALS[0], FINALS[1]).getName() + " has won.");
+        Tournament.displayStats(userTeam);
 
         /*
         Tournament.displayBracket();

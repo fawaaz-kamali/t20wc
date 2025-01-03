@@ -157,24 +157,25 @@ public class Tournament {
         ArrayList<Player> players = team.getTeam();
 
         System.out.println("====================== BOWLING STATS (TOURNAMENT) ======================");
-        System.out.printf("%n%-5s%-35s%-10s%%-12s%-12s", "No.", "Name", "Wickets", "Bowling %", "Overall %");
+        System.out.printf("%n%-5s%-35s%-10s%-12s%-12s", "No.", "Name", "Wickets", "Bowling %", "Overall %");
         for (int i = 0; i < players.size(); i++)
         {
-            System.out.printf("%n%-5s%-35s%-10s%%-12s%-12s", i+1, players.get(i).getName(), players.get(i).getWicketsTaken(),
+            System.out.printf("%n%-5s%-35s%-10s%-12s%-12s", i+1, players.get(i).getName(), players.get(i).getWicketsTaken(),
                 players.get(i).getBowlingRating(), players.get(i).getOverallRating());
         }
-
-        Utilities.inputString("Press the enter key to continue >");
+        System.out.println();
+        Utilities.inputString("Press the enter key to continue> ");
 
         System.out.println("\n\n\n");
         System.out.println("====================== BATTING STATS (TOURNAMENT) ======================");
-        System.out.printf("%n%-5s%-35s%-10s%%-12s%-12s", "No.", "Name", "Runs Sco.", "Batting %", "Overall %");
+        System.out.printf("%n%-5s%-35s%-10s%-12s%-12s", "No.", "Name", "Runs Sco.", "Batting %", "Overall %");
         for (int i = 0; i < players.size(); i++)
         {
-            System.out.printf("%n%-5s%-35s%-10s%%-12s%-12s", i+1, players.get(i).getName(), players.get(i).getRunsScored(),
+            System.out.printf("%n%-5s%-35s%-10s%-12s%-12s", i+1, players.get(i).getName(), players.get(i).getRunsScored(),
                 players.get(i).getBattingRating(), players.get(i).getOverallRating());
         }
-
+        System.out.println();
+        Utilities.inputString("Press the enter key to continue> ");
         System.out.println("\n\n\n");
     }
 
