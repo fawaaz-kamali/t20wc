@@ -1,6 +1,6 @@
 /**********************************
  * @author          Fawaaz Kamali Siddiqui
- * @lastupdate      17 July 2024
+ * @lastupdate      3 January 2025
  * @description     
  * 
  * 
@@ -135,13 +135,15 @@ public class Match {
      * wickets are taken or target is chased. Bowler must guess the same
      * number as batsman in a given range to take a wicket.
      */
-    private static void bowlOver() {
+    private static int bowlOver() {
         // TODO
         int userGuess = 0;
         int compGuess = 0;
         int thresholdMin = 1;
         int thresholdMax = 0;
         int ballsBowled = 0;
+        int overRuns = 0;
+
         do {
             displayScorecard();
             // thresholdMin = determineThreshold()[0];
@@ -186,9 +188,12 @@ public class Match {
                     // ignore
                     currentStriker = null;
                 }
-            } else // add runs to tally
+            } 
+            
+            else // add runs to tally
             {
                 currentRuns += compGuess;
+                overRuns += compGuess;
                 currentBowler.incrementMatchBallsBowled();
                 currentBowler.addMatchRunsConceded(compGuess);
                 currentStriker.incrementMatchBallsBatted();
@@ -200,19 +205,16 @@ public class Match {
                 {
                     switchStrike();
                 }
-                if (compGuess % 2 == 0 && ballsBowled == 5) // switch strike at end of overs
-                {
-                    switchStrike();
-                }
             }
             ballsBowled += 1;
             inningsBallsBowled += 1;
             if (!isFirstInnings && currentRuns >= target) {
-                break; // target has been chased
+                return overRuns; // target has been chased
             }
 
         } while (currentWickets < 10 && ballsBowled < 6);
         switchStrike();
+        return overRuns;
     }
 
     /****************
@@ -265,12 +267,13 @@ public class Match {
 
     }
 
-    private static void batOver() {
+    private static int batOver() {
         int userGuess = 0;
         int compGuess = 0;
         int thresholdMin = 1;
         int thresholdMax = 0;
         int ballsBowled = 0;
+        int overRuns = 0;
 
         do {
             displayScorecard();
@@ -282,6 +285,7 @@ public class Match {
             userGuess = Utilities.inputInt("Enter number between " + thresholdMin + " and " + thresholdMax + ": ",
                     thresholdMin, thresholdMax);
             System.out.printf("%s entered %s. %n", currentBowler.getName(), compGuess);
+
             if (userGuess == compGuess) {
                 currentWickets += 1;
                 currentBowler.incrementMatchBallsBowled();
@@ -319,6 +323,7 @@ public class Match {
             } else // add runs to tally
             {
                 currentRuns += userGuess;
+                overRuns += userGuess;
                 currentBowler.incrementMatchBallsBowled();
                 currentBowler.addMatchRunsConceded(userGuess);
                 currentStriker.incrementMatchBallsBatted();
@@ -330,19 +335,16 @@ public class Match {
                 {
                     switchStrike();
                 }
-                if (userGuess % 2 == 0 && ballsBowled == 5) // switch strike at end of overs
-                {
-                    switchStrike();
-                }
             }
             ballsBowled += 1;
             inningsBallsBowled += 1;
             if (!isFirstInnings && currentRuns >= target) {
-                break; // target has been chased
+                return overRuns; // target has been chased
             }
 
         } while (currentWickets < 10 && ballsBowled < 6);
         switchStrike();
+        return overRuns;
     }
 
     private static void batInnings(Team userTeam, Team opponent) {
@@ -402,12 +404,14 @@ public class Match {
             isFirstInnings = true;
             batInnings(userTeam, opponent);
             Utilities.slowPrint(String.format("%s has set a target of %s.%n", userTeam.getName(), target), 20);
+            Utilities.inputString("Press the enter key to continue> ");
             isFirstInnings = false;
             bowlInnings(userTeam, opponent);
         } else {
             isFirstInnings = true;
             bowlInnings(userTeam, opponent);
             Utilities.slowPrint(String.format("%s has set a target of %s.%n", opponent.getName(), target), 20);
+            Utilities.inputString("Press the enter key to continue> ");
             isFirstInnings = false;
             batInnings(userTeam, opponent);
         }
@@ -553,8 +557,11 @@ public class Match {
             System.out.printf("%s - %s (%s)* %n", currentStriker.getName(), currentStriker.getMatchRunsScored(),
                     currentStriker.getMatchBallsBatted());
         }
-        System.out.printf("%s - %s (%s) %n", currentNonStriker.getName(), currentNonStriker.getMatchRunsScored(),
+        if (currentNonStriker != null)
+        {
+            System.out.printf("%s - %s (%s) %n", currentNonStriker.getName(), currentNonStriker.getMatchRunsScored(),
                 currentNonStriker.getMatchBallsBatted());
+        }
         System.out.println("=======================================");
         System.out.printf("%s - %s/%s (%s.%s) %n", currentBowler.getName(), currentBowler.getMatchWickets(),
                 currentBowler.getMatchRunsConceded(), currentBowler.getMatchBallsBowled() / 6,
