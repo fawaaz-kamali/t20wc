@@ -82,25 +82,29 @@ public class Tournament {
         for (int i = 0; i < currentRound.length; i+=2)
         {
             // check if user team is being accidentally simulated. if so, skip the simulation
-            /* 
-            if (currentRound[i].getName().equals(Main.userTeam.getName()))
-            {
-                userTeamIndex = i;
-                continue;
-            }
-            else if (currentRound[i+1].getName().equals(Main.userTeam.getName()))
-            {
-                userTeamIndex = i+1;
-                continue;
-            }
-                */
+            // if (currentRound[i].getName().equals(Main.userTeam.getName()))
+            // {
+            //     userTeamIndex = i;
+            //     continue;
+            // }
+            // else if (currentRound[i+1].getName().equals(Main.userTeam.getName()))
+            // {
+            //     userTeamIndex = i+1;
+            //     continue;
+            // }
             // simulate round between computers
             nextRound[i/2] = simulateMatch(currentRound[i], currentRound[i+1]);
         }
 
         // play out user match
-        //nextRound[userTeamIndex/2] = Match.playMatch(Main.userTeam, 
+        // nextRound[userTeamIndex/2] = Match.playMatch(Main.userTeam, 
         //                (userTeamIndex%2==0) ? currentRound[userTeamIndex + 1] : currentRound[userTeamIndex - 1]); // index of opponent team
+
+        // Delete later
+        for (int i = 0; i < nextRound.length; i++)
+        {
+            System.out.println(nextRound[i].getName());
+        }
         return nextRound;
     }
 
@@ -146,6 +150,8 @@ public class Tournament {
                 }
             }
         }
+
+        Utilities.inputString("Press the enter key to continue> ");
     }
 
     /******************************

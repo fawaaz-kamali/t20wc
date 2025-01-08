@@ -1,6 +1,6 @@
 /**********************************
  * @author          Fawaaz Kamali Siddiqui
- * @lastupdate      17 July 2024
+ * @lastupdate      8 January 2025
  * @description     
  * 
  * 
@@ -16,7 +16,6 @@ import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import main.Match;
 
 public class Main
 {
@@ -40,6 +39,8 @@ public class Main
     static Team westindies = new WestIndies();
 
     static Team userTeam;
+
+    static boolean isTournamentOver;
 
     static Team[] R16 = {afghanistan, australia, bangladesh, canada, england, india, ireland, 
         nepal, netherlands, newzealand, pakistan, scotland, southafrica, srilanka, usa, westindies
@@ -73,6 +74,35 @@ public class Main
         return WINNER;
     }
 
+    private static void forfeit()
+    {
+        // delete and recreate file
+        String fileName = "src\\main\\progress.txt";
+        File file = new File(fileName);
+        try 
+        {
+            // Delete the file if it exists
+            if (file.exists()) {
+                if (file.delete()) {
+                    System.out.println("File deleted: " + fileName);
+                } else {
+                    System.out.println("Failed to delete the file: " + fileName);
+                }
+            }
+
+            // Create a new file
+            if (file.createNewFile()) {
+                System.out.println("New file created: " + fileName);
+            } else {
+                System.out.println("File already exists: " + fileName);
+            }
+        } 
+        catch (IOException e) 
+        {
+            System.out.println("An error occurred: " + e.getMessage());
+        }
+    }
+
     public static void main(String[] args) throws FileNotFoundException
     {
 
@@ -83,13 +113,32 @@ public class Main
         // loadProgress
         Utilities.loadProgress();
         
+        // assign currentRound variable
+        if (QF[0] == null)
+        {
+            currentRound = 1;
+        }
+        else if (SF[0] == null)
+        {
+            currentRound = 2;
+        }
+        else if (FINALS[0] == null)
+        {
+            currentRound = 3;
+        }
+        else if (WINNER[0] == null)
+        {
+            currentRound = 4;
+        }
+        
         // if there is no user team, ask user to select team
-        if (userTeam != null)
+        if (userTeam == null)
         {
             System.out.println(); // newline
+            System.out.printf("%-4s%-20s%-10s%n", "No.", "Team", "Rating");
             for (int i = 0; i < R16.length; i++)
             {
-                System.out.printf("%-4s%-20s%-10s%n", "No.", "Team", "Rating");
+                System.out.printf("%-4s%-20s%-10.3f%n", i+1, R16[i].getName(), R16[i].getOverallRating());
             }
             int choice = Utilities.inputInt("Choose your team no.: ", 1, R16.length);
             userTeam = R16[choice - 1];
@@ -101,16 +150,24 @@ public class Main
         do
         {
             // Get opponent based on current round
-            int userIndex = 0;
-            for (int i = 0; i < getRound(currentRound).length; i++)
+            Team[] currentKnockout = getRound(currentRound);
+
+            // Delete later
+            for (int i = 0; i < currentKnockout.length; i++)
             {
-                if (getRound(currentRound)[i].getName().equals(userTeam.getName()))
+                System.out.println(currentKnockout[i].getName());
+            }
+
+            int userIndex = 0;
+            for (int i = 0; i < currentKnockout.length; i++)
+            {
+                if (currentKnockout[i].getName().equals(userTeam.getName()))
                 {
                     userIndex = i;
                     break;
                 }
             }
-            Team opponent = (userIndex%2==0) ? getRound(currentRound)[userIndex + 1] : getRound(currentRound)[userIndex - 1];
+            Team opponent = (userIndex%2==0) ? currentKnockout[userIndex + 1] : currentKnockout[userIndex - 1];
 
             System.out.println("\n\n"); // 3 newlines
             System.out.println("=================================================");
@@ -133,29 +190,104 @@ public class Main
                 // if user wins, they advance to next round
                 // if user loses, the remaining tournament is simulated and the program ends
                 case "1":
-                    // TODO
-                    // Team[] nextRound = getRound(currentRound + 1);
+                    Team[] nextKnockout = getRound(currentRound + 1);
                     // nextRound = Tournament.simulateRound(getRound(currentRound));
-                    Team[] nextRound = Tournament.simulateRound(getRound(currentRound));
+                    // Team[] nextKnockout = new Team[currentKnockout.length / 2];
+                    nextKnockout = Tournament.simulateRound(currentKnockout);
                     // check if user team makes it to next round
                     userIndex = -1;
-                    for (int i = 0; i < nextRound.length; i++)
+                    for (int i = 0; i < nextKnockout.length; i++)
                     {
-                        if (nextRound[i].getName().equals(userTeam.getName()))
+                        if (nextKnockout[i].getName().equals(userTeam.getName()))
                         {
                             userIndex = i;
                             break;
                         }
                     }
                     currentRound ++;
-                    // if loser does not make it to next round
+
+                    // copy nextKnockout into official array
+                    if (currentRound == 2)
+                    {
+                        Utilities.copyArray(nextKnockout, QF);
+                    }
+                    else if (currentRound == 3)
+                    {
+                        Utilities.copyArray(nextKnockout, SF);
+                    }
+                    else if (currentRound == 4)
+                    {
+                        Utilities.copyArray(nextKnockout, FINALS);
+                    }
+                    else if (currentRound == 5)
+                    {
+                        Utilities.copyArray(nextKnockout, WINNER);
+                    }
+
+                    // if user does not make it to next round
                     if (userIndex == -1)
                     {
                         // simulate remaining tournament while waiting for prompt and display overall bracket
+                        // TODO: figure out way to exit program
+                        System.out.println("\n\n");
+                        System.out.printf("%s have been eliminated.%n", userTeam.getName());
+                        Utilities.inputString("Press the enter key to finish tournament> ");
+                        
+                        while (currentRound < 5)
+                        {
+                            // copy nextKnockout into official array
+                            if (currentRound == 2)
+                            {
+                                Utilities.copyArray(nextKnockout, QF);
+                            }
+                            else if (currentRound == 3)
+                            {
+                                Utilities.copyArray(nextKnockout, SF);
+                            }
+                            else if (currentRound == 4)
+                            {
+                                Utilities.copyArray(nextKnockout, FINALS);
+                            }
+                            nextKnockout = Tournament.simulateRound(getRound(currentRound));
+                            currentRound ++;
+                        }
+                        if (!userTeam.getName().equals(FINALS[0].getName()) && !userTeam.getName().equals(FINALS[1].getName()))
+                        {
+                            WINNER[0] = Tournament.simulateMatch(FINALS[0], FINALS[1]);
+                        }
+                        Tournament.displayBracket();
+                        System.out.printf("%s have been crowned the 2024 T10 World Cup Champions.%n", WINNER[0].getName());
+                        Utilities.inputString("Press the enter key to quit> ");
+                        forfeit();
+                        isTournamentOver = true;
                     }
                     else
                     {
                         // tell user they made it to next round. if they won the finals, print out a message saying they won the tournament.
+                        System.out.println("\n\n");
+                        if (currentRound <= 4)
+                        {
+                            System.out.printf("%s have advanced to the next round.%n", userTeam.getName());
+                            Utilities.inputString("Press the enter key to continue> ");
+                            for (int i = 0; i < QF.length; i++)
+                            {
+                                System.out.println(QF[i].getName());
+                            }
+                            // System.out.println("------------------");
+                            // for (int i = 0; i < getRound(currentRound).length; i++)
+                            // {
+                            //     System.out.println(getRound(currentRound)[i].getName());
+                            // }
+                        }
+                        else
+                        {
+                            Utilities.slowPrint("And yet another historic World Cup comes to a thrilling end.\n", 40);
+                            Utilities.slowPrint(userTeam.getName() + " have been crowned champions of the world following a fantastic contest in the finals.\n", 40);
+                            System.out.println("\n\n");
+                            Utilities.inputString("Press the enter key to exit> ");
+                            isTournamentOver = true;
+                            forfeit();
+                        }
                     }
                     break;
                 
@@ -188,31 +320,7 @@ public class Main
 
                 // 6. Forfeit Tournament
                 case "6":
-                    // delete and recreate file
-                    String fileName = "progress.txt";
-                    File file = new File(fileName);
-                    try 
-                    {
-                        // Delete the file if it exists
-                        if (file.exists()) {
-                            if (file.delete()) {
-                                System.out.println("File deleted: " + fileName);
-                            } else {
-                                System.out.println("Failed to delete the file: " + fileName);
-                            }
-                        }
-            
-                        // Create a new file
-                        if (file.createNewFile()) {
-                            System.out.println("New file created: " + fileName);
-                        } else {
-                            System.out.println("File already exists: " + fileName);
-                        }
-                    } 
-                    catch (IOException e) 
-                    {
-                        System.out.println("An error occurred: " + e.getMessage());
-                    }
+                    forfeit();
                     break;
                 
                 default:
@@ -220,7 +328,7 @@ public class Main
             }
             
 
-        } while((currentRound < 5) && (!menu.equals("5") || !menu.equals("6"))); // modify condition later on
+        } while((currentRound < 5) && (!menu.equals("5") && !menu.equals("6")) && !isTournamentOver); // modify condition later on
 
     }
 }

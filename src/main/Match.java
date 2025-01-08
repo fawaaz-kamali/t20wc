@@ -240,7 +240,7 @@ public class Match {
         currentBowler = pickBowler(currentNonStriker); // ignore parameter
         do {
             bowlOver();
-            if (!isFirstInnings && currentRuns > target) // target has been chased
+            if (!isFirstInnings && currentRuns >= target) // target has been chased
             {
                 break;
             }
@@ -363,7 +363,7 @@ public class Match {
         currentBowler = getBestBowler(currentStriker); // ignore parameter
         do {
             batOver();
-            if (!isFirstInnings && currentRuns > target) // target has been chased
+            if (!isFirstInnings && currentRuns >= target) // target has been chased
             {
                 break;
             }
@@ -594,7 +594,7 @@ public class Match {
             System.out.printf("%-40s%-10s%-10s%-15.2f%-10s%-20s", p.getName(), p.getMatchRunsScored(),
                     p.getMatchBallsBatted(), strikeRate, p.getBattingRating(), p.getOverallRating());
 
-            if ((currentNonStriker != null) && (p.getName().equals(currentStriker.getName())
+            if ((currentNonStriker != null) && (currentStriker != null) && (p.getName().equals(currentStriker.getName())
                     || p.getName().equals(currentNonStriker.getName()))) {
                 System.out.print("NOT OUT");
             } else {

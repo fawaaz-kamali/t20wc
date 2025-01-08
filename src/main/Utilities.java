@@ -105,6 +105,16 @@ public class Utilities
         return duplicate;
     }
 
+    public static void copyArray(Team[] array, Team[] target)
+    {
+        // Team[] target = new Team[array.length];
+        for (int i = 0; i < array.length; i++)
+        {
+            target[i] = array[i];
+        }
+        // return duplicate;
+    }
+
     /*********************
      * mapTeam(): used for mapping a name to an object.
      */
