@@ -221,15 +221,19 @@ public class Utilities
 
             // Remaining Lines store individual player stats in order
             // Runs Scored, Wickets
-            for (int i = 0; i < Main.userTeam.getTeam().size(); i++)
+            if (Main.userTeam != null)
             {
-                if (diskScanner.hasNextLine())
+                for (int i = 0; i < Main.userTeam.getTeam().size(); i++)
                 {
-                    Main.userTeam.getTeam().get(i).setRunsScored(Integer.parseInt(diskScanner.next()));     // Set runs scored
-                    Main.userTeam.getTeam().get(i).setWicketsTaken(Integer.parseInt(diskScanner.next()));   // Set wickets taken
-                    diskScanner.nextLine();
+                    if (diskScanner.hasNextLine())
+                    {
+                        Main.userTeam.getTeam().get(i).setRunsScored(Integer.parseInt(diskScanner.next()));     // Set runs scored
+                        Main.userTeam.getTeam().get(i).setWicketsTaken(Integer.parseInt(diskScanner.next()));   // Set wickets taken
+                        diskScanner.nextLine();
+                    }
                 }
             }
+            
             diskScanner.close();
         }
         catch (FileNotFoundException e) 

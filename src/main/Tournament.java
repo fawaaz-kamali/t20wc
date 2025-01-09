@@ -76,7 +76,7 @@ public class Tournament {
     public static Team[] simulateRound(Team[] currentRound) 
     {
         Team[] nextRound = new Team[currentRound.length / 2];
-        int userTeamIndex = 0;
+        int userTeamIndex = -1;
         
         for (int i = 0; i < currentRound.length; i+=2)
         {
@@ -96,8 +96,11 @@ public class Tournament {
         }
 
         // play out user match
-        nextRound[userTeamIndex/2] = Match.playMatch(Main.userTeam, 
-                       (userTeamIndex%2==0) ? currentRound[userTeamIndex + 1] : currentRound[userTeamIndex - 1]); // index of opponent team
+        if (userTeamIndex != -1)
+        {
+            nextRound[userTeamIndex/2] = Match.playMatch(Main.userTeam, 
+            (userTeamIndex%2==0) ? currentRound[userTeamIndex + 1] : currentRound[userTeamIndex - 1]); // index of opponent team
+        }
         return nextRound;
     }
 
