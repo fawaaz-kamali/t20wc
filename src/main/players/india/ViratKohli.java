@@ -22,6 +22,6 @@ public class ViratKohli extends Player
         this.setName("Virat Kohli");
         this.setBattingRating(93);
         this.setBowlingRating(68);
-        this.setOverallRating(92);
+        this.setOverallRating(90);
     }
 }

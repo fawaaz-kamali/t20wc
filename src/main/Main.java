@@ -96,6 +96,9 @@ public class Main
             } else {
                 System.out.println("File already exists: " + fileName);
             }
+
+            System.out.println("\n\n");
+            System.out.println("It was nice playing with you. Goodbye!");
         } 
         catch (IOException e) 
         {
@@ -151,13 +154,6 @@ public class Main
         {
             // Get opponent based on current round
             Team[] currentKnockout = getRound(currentRound);
-
-            // Delete later
-            for (int i = 0; i < currentKnockout.length; i++)
-            {
-                System.out.println(currentKnockout[i].getName());
-            }
-
             int userIndex = 0;
             for (int i = 0; i < currentKnockout.length; i++)
             {
@@ -269,15 +265,6 @@ public class Main
                         {
                             System.out.printf("%s have advanced to the next round.%n", userTeam.getName());
                             Utilities.inputString("Press the enter key to continue> ");
-                            for (int i = 0; i < QF.length; i++)
-                            {
-                                System.out.println(QF[i].getName());
-                            }
-                            // System.out.println("------------------");
-                            // for (int i = 0; i < getRound(currentRound).length; i++)
-                            // {
-                            //     System.out.println(getRound(currentRound)[i].getName());
-                            // }
                         }
                         else
                         {
@@ -330,5 +317,6 @@ public class Main
 
         } while((currentRound < 5) && (!menu.equals("5") && !menu.equals("6")) && !isTournamentOver); // modify condition later on
 
+        userInput.close();
     }
 }

@@ -20,8 +20,8 @@ public class TravisHead extends Player
     public void setRatings()
     {
         this.setName("Travis Head");
-        this.setBattingRating(85);
-        this.setBowlingRating(75);
+        this.setBattingRating(93);
+        this.setBowlingRating(80);
         this.setOverallRating(84);
     }
 }

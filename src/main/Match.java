@@ -259,7 +259,15 @@ public class Match {
             if (currentRuns >= target) {
                 userWin = false;
             } else if (currentRuns == (target - 1)) {
-                // super over
+                // coin toss to decide winner
+                if (tieBreaker(userTeam, opponent).getName().equals(userTeam.getName()))
+                {
+                    userWin = true;
+                }
+                else 
+                {
+                    userWin = false;
+                }
             } else {
                 userWin = true;
             }
@@ -382,7 +390,15 @@ public class Match {
             if (currentRuns >= target) {
                 userWin = true;
             } else if (currentRuns == (target - 1)) {
-                // super over
+                // coin toss to decide winner
+                if (tieBreaker(userTeam, opponent).getName().equals(userTeam.getName()))
+                {
+                    userWin = true;
+                }
+                else 
+                {
+                    userWin = false;
+                }
             } else {
                 userWin = false;
             }
@@ -458,6 +474,31 @@ public class Match {
             }
         }
         Utilities.inputString("Press the enter key to continue> ");
+    }
+
+    private static Team tieBreaker(Team userTeam, Team opponent)
+    {
+        int toss = 0;
+        int coinFlip = (int) (Math.random() * 2 + 1);
+
+        Utilities.slowPrint("Both captains are on the ground for the toss.\n", 20);
+        toss = Utilities.inputInt("Your call. Heads(1) or tails(2): ", 1, 2);
+
+        String result = (coinFlip == 1) ? "The coin says Heads.\n" : "The coin says Tails.\n";
+        System.out.println(result);
+
+        if (toss == coinFlip)
+        {
+            Utilities.slowPrint(userTeam.getName() + " have won the toss.\n", 25);
+            Utilities.slowPrint("And with that, it is an unfortunate ending for " + opponent.getName() + ".\n", 25);
+            return userTeam;
+        }
+        else 
+        {
+            Utilities.slowPrint(opponent.getName() + " have won the toss.\n", 25);
+            Utilities.slowPrint("And with that, it is an unfortunate ending for " + userTeam.getName() + ".\n", 25);
+            return opponent;
+        }
     }
 
     private static int determineThreshold() {
