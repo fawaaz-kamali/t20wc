@@ -1,7 +1,7 @@
 /**********************************
  * @author          Fawaaz Kamali Siddiqui
- * @lastupdate      30 July 2024
- * @description     
+ * @lastupdate      9 January 2025
+ * @description     Generic player template
  * 
  * 
  * 
@@ -104,6 +104,15 @@ public abstract class Player
 
 
     // INDIVIDUAL MATCH STATS
+
+    public void resetMatchStatistics()
+    {
+        this.matchBallsBatted = 0;
+        this.matchBallsBowled = 0;
+        this.matchRunsConceded = 0;
+        this.matchRunsScored = 0;
+        this.matchWickets = 0;
+    }
 
     public int getMatchBallsBatted()
     {

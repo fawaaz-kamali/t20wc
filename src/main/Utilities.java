@@ -1,6 +1,6 @@
 /**********************************
  * @author          Fawaaz Kamali Siddiqui
- * @lastupdate      1 August 2024
+ * @lastupdate      9 January 2025
  * @description     Contains methods that are
  *                  used throughout the program 
  *                  in various applications such as
@@ -221,15 +221,15 @@ public class Utilities
 
             // Remaining Lines store individual player stats in order
             // Runs Scored, Wickets
-            // for (int i = 0; i < Main.userTeam.getTeam().size(); i++)
-            // {
-            //     if (diskScanner.hasNextLine())
-            //     {
-            //         Main.userTeam.getTeam().get(i).setRunsScored(Integer.parseInt(diskScanner.next()));     // Set runs scored
-            //         Main.userTeam.getTeam().get(i).setWicketsTaken(Integer.parseInt(diskScanner.next()));   // Set wickets taken
-            //         diskScanner.nextLine();
-            //     }
-            // }
+            for (int i = 0; i < Main.userTeam.getTeam().size(); i++)
+            {
+                if (diskScanner.hasNextLine())
+                {
+                    Main.userTeam.getTeam().get(i).setRunsScored(Integer.parseInt(diskScanner.next()));     // Set runs scored
+                    Main.userTeam.getTeam().get(i).setWicketsTaken(Integer.parseInt(diskScanner.next()));   // Set wickets taken
+                    diskScanner.nextLine();
+                }
+            }
             diskScanner.close();
         }
         catch (FileNotFoundException e) 

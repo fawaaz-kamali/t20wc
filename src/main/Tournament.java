@@ -1,8 +1,8 @@
 /**********************************
  * @author          Fawaaz Kamali Siddiqui
- * @lastupdate      18 July 2024
- * @description     
- * 
+ * @lastupdate      9 January 2025
+ * @description     Responsible for handling tournament
+ *                  statistics and eliminations.
  * 
  * 
 **********************************/

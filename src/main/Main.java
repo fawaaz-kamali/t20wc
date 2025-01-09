@@ -1,9 +1,9 @@
 /**********************************
  * @author          Fawaaz Kamali Siddiqui
- * @lastupdate      8 January 2025
- * @description     
- * 
- * 
+ * @lastupdate      9 January 2025
+ * @description     Main class of program with which
+ *                  game is run. All classes are combined
+ *                  together and work here.
  * 
 **********************************/
 package main;
@@ -42,7 +42,7 @@ public class Main
 
     static boolean isTournamentOver;
 
-    static Team[] R16 = {afghanistan, australia, bangladesh, canada, england, india, ireland, 
+    static Team[] R16 = {afghanistan, australia, bangladesh, canada, england, ireland, india, 
         nepal, netherlands, newzealand, pakistan, scotland, southafrica, srilanka, usa, westindies
     };
     // static Team[] R16 = new Team[16];
@@ -224,9 +224,11 @@ public class Main
                     if (userIndex == -1)
                     {
                         // simulate remaining tournament while waiting for prompt and display overall bracket
-                        // TODO: figure out way to exit program
                         System.out.println("\n\n");
                         System.out.printf("%s have been eliminated.%n", userTeam.getName());
+                        Utilities.inputString("Press the enter key to view final statistics> ");
+                        Tournament.displayStats(userTeam);
+
                         Utilities.inputString("Press the enter key to finish tournament> ");
                         
                         while (currentRound < 5)
@@ -307,7 +309,13 @@ public class Main
 
                 // 6. Forfeit Tournament
                 case "6":
-                    forfeit();
+                    // double ask user
+                    String confirm = Utilities.inputString("WARNING: All progress will be lost. (g)o back or (p)roceed: ");
+                    if (confirm.toLowerCase().equals("p"))
+                    {
+                        forfeit();
+                        isTournamentOver = true;
+                    }
                     break;
                 
                 default:
@@ -315,7 +323,7 @@ public class Main
             }
             
 
-        } while((currentRound < 5) && (!menu.equals("5") && !menu.equals("6")) && !isTournamentOver); // modify condition later on
+        } while(currentRound < 5 && (!menu.equals("5") && !isTournamentOver)); // modify condition later on
 
         userInput.close();
     }
